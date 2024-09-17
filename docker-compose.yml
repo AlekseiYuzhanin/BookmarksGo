@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15.2
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: bookmarks_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - psql222:/var/lib/postgresql/data
+
+  elastic:
+    image: elasticsearch:8.15.1
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+    ports:
+      - "9200:9200"
+
+volumes:
+  psql222:
