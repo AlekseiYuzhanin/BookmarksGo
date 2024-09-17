@@ -8,17 +8,10 @@ RUN go mod download
 
 COPY . .
 
-RUN GOOS=linux GOARCH=amd64 go build -o bookmarkSearch ./cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bookmarkSearch ./cmd/main.go
 
-FROM alpine:latest
+RUN chmod +x ./bookmarkSearch
 
-WORKDIR /app
-
-COPY --from=builder /app/bookmarkSearch .
-
-RUN test -f ./bookmarkSearch && chmod +x ./bookmarkSearch
-
-# Открываем порт
 EXPOSE 8080
 
 CMD ["./bookmarkSearch"]
